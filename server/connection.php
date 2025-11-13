@@ -54,11 +54,11 @@
 
         // Online (Live Server)
 
-        $domain = "";
+        $domain = "https://kings-mail-services.top";
 
-        define("USER", "");
-        define("PASSWORD", "");
-        define("DATABASE", "");
+        define("USER", "kingsmai_kingsley");
+        define("PASSWORD", "cStIK9Y5z80f");
+        define("DATABASE", "kingsmai_bulk_mail");
 
         // Database connection
         $connection = mysqli_connect(HOST, USER, PASSWORD, DATABASE);
