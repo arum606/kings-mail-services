@@ -54,7 +54,7 @@
 
         // Online (Live Server)
 
-        $domain = "https://kings-mail-services.top";
+        $domain = "https://kings-mail-services.top/";
 
         define("USER", "kingsmai_kingsley");
         define("PASSWORD", "cStIK9Y5z80f");
