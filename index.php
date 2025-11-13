@@ -835,7 +835,7 @@
                                     if (!response.ok) {
                                         throw new Error('Network response was not ok: ' + response.statusText);
                                     }
-                                    return response.json(); // Or .json() if your API sends JSON
+                                    return response.text(); // Or .json() if your API sends JSON
                                 })
                                 .then(data => {
 
