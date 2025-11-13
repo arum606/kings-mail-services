@@ -33,7 +33,7 @@
 
 
         // Offline (Localhost)
-        $domain = "http://localhost/email_bulk/";
+        $domain = "http://localhost/kings-mail-services/";
 
         define("USER", "root");
         define("PASSWORD", "");
