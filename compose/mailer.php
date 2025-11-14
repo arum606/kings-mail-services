@@ -38,7 +38,7 @@ if (empty($valid_recipients)) {
 }
 
 // Build HTML body
-$htmlBody = "$body";
+$htmlBody = $body;
 
 // Counters
 $total_email = count($valid_recipients);
@@ -46,10 +46,10 @@ $sent = 0;
 $failed = 0;
 
 // ----------------------------
-// INITIALIZE PHPMailer ONCE
+// INITIALIZE PHPMailer
 // ----------------------------
-$mail = new PHPMailer(); 
-$mail->IsSMTP();
+$mail = new PHPMailer();
+$mail->isSMTP();
 $mail->SMTPAuth = true;
 
 $mail->SMTPSecure = $security;
@@ -58,26 +58,30 @@ $mail->Port = $port;
 $mail->Username = $username;
 $mail->Password = $smtp_password;
 
-$mail->IsHTML(true);
-$mail->From = $smtp_email;
-$mail->FromName = $smtp_sender_name;
-$mail->AddReplyTo($reply_to, $smtp_sender_name);
+$mail->isHTML(true);
+
+// Correct way to set sender display name
+$mail->setFrom($smtp_email, $smtp_sender_name);
+
+// Reply-to with proper name
+$mail->addReplyTo($reply_to, "support");
+
+// Subject and body
 $mail->Subject = $subject;
 $mail->Body = $htmlBody;
 
-// Set List-Unsubscribe header
+// Optional headers
 $mail->addCustomHeader("List-Unsubscribe", "<mailto:unsubscribe@$domain>");
 
+// Keep SMTP connection alive
 $mail->SMTPKeepAlive = true;
 
-// ----------------------------
-// SEND EMAILS AS BCC (ONE SEND)
-// ----------------------------
+// Add recipients as BCC
 foreach ($valid_recipients as $email) {
     $mail->addBCC($email);
 }
 
-// Send once
+// Send the email
 if ($mail->send()) {
     $sent = $total_email;
 } else {
@@ -105,5 +109,4 @@ echo json_encode([
     'sent'   => $sent,
     'failed' => $failed
 ]);
-
 ?>
