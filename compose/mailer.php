@@ -73,6 +73,10 @@ if (
         $mail->Subject = $subject;
         $mail->Body = $htmlBody;
 
+        // Add List-Unsubscribe header dynamically
+        $mail->addCustomHeader('List-Unsubscribe', '<mailto:unsubscribe@' . $domain . '>');
+
+
         // Set recipient address
         $mail->ClearAddresses();
         $mail->AddAddress($email);
