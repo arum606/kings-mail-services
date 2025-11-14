@@ -48,7 +48,7 @@ $failed = 0;
 // ----------------------------
 // INITIALIZE PHPMailer ONCE
 // ----------------------------
-$mail = new PHPMailer();
+$mail = new PHPMailer(); 
 $mail->IsSMTP();
 $mail->SMTPAuth = true;
 
