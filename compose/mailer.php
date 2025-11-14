@@ -99,6 +99,7 @@ if (
             VALUES ('$status', $total_email, $sent, $failed, NOW(), '$escaped_subject','$id')";
     mysqli_query($connection, $sql);
 
+    
     echo json_encode([
         'status' => $status,
         'total' => $total_email,
