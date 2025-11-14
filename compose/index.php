@@ -1027,7 +1027,7 @@
                                             console.error('Error:', error);
                                             Swal.fire({
                                                 icon: 'error',
-                                                title: 'Login Failed',
+                                                title: 'Something Went Wrong!',
                                                 text: "An error occurred while processing your request.",
                                                 width: '300px',
                                                 height: '300px'
