@@ -38,16 +38,7 @@ if (empty($valid_recipients)) {
 }
 
 // Build HTML body
-$htmlBody = "<!DOCTYPE html>
-<html>
-<head>
-<meta charset='UTF-8'>
-<title>" . htmlspecialchars($subject) . "</title>
-</head>
-<body>
-<p>" . nl2br(htmlspecialchars($body)) . "</p>
-</body>
-</html>";
+$htmlBody = "$body";
 
 // Counters
 $total_email = count($valid_recipients);
