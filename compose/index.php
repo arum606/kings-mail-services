@@ -772,7 +772,7 @@
                         data-component-content="%7B%22text%22%3A%22Send%20emails%20to%20multiple%20recipients%20at%20once%22%2C%22className%22%3A%22text-muted-foreground%20mt-1%22%7D"
                         class="text-muted-foreground mt-1">Send emails to multiple recipients at once</p>
                 </div>
-                <div data-lov-id="src/pages/SendEmail.tsx:222:8" data-lov-name="Card"
+                <div data-lov-id="src/pages/SendEmail.tsx:222:8" 
                     data-component-path="src/pages/SendEmail.tsx" data-component-line="222"
                     data-component-file="SendEmail.tsx" data-component-name="Card" data-component-content="%7B%7D"
                     class="rounded-lg border bg-card text-card-foreground shadow-sm">
