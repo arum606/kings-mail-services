@@ -1,4 +1,4 @@
-<?php  include("../server/connection.php"); ?>
+<?php  include("../server/connection.php");   include("../server/auth.php") ;   ?>
 
 <html lang="en">
 
@@ -772,10 +772,9 @@
                         data-component-content="%7B%22text%22%3A%22Send%20emails%20to%20multiple%20recipients%20at%20once%22%2C%22className%22%3A%22text-muted-foreground%20mt-1%22%7D"
                         class="text-muted-foreground mt-1">Send emails to multiple recipients at once</p>
                 </div>
-                <div data-lov-id="src/pages/SendEmail.tsx:222:8" 
-                    data-component-path="src/pages/SendEmail.tsx" data-component-line="222"
-                    data-component-file="SendEmail.tsx" data-component-name="Card" data-component-content="%7B%7D"
-                    class="rounded-lg border bg-card text-card-foreground shadow-sm">
+                <div data-lov-id="src/pages/SendEmail.tsx:222:8" data-component-path="src/pages/SendEmail.tsx"
+                    data-component-line="222" data-component-file="SendEmail.tsx" data-component-name="Card"
+                    data-component-content="%7B%7D" class="rounded-lg border bg-card text-card-foreground shadow-sm">
                     <div data-lov-id="src/pages/SendEmail.tsx:223:10" data-lov-name="CardHeader"
                         data-component-path="src/pages/SendEmail.tsx" data-component-line="223"
                         data-component-file="SendEmail.tsx" data-component-name="CardHeader"
@@ -808,7 +807,25 @@
                                 </label>
                                 <input
                                     class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-                                    id="subject" name="subject" type="text" placeholder="Enter email subject" />
+                                    id="subject" name="subject" type="text" value="<?php echo $preferance_subject ?>"
+                                    placeholder="Enter email subject" />
+                            </div>
+
+                            <div class="space-y-2">
+                                <label
+                                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                    for="subject">
+                                    Body Type (HTML or Plain Text)
+                                </label>
+                                <select
+                                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                                    id="body_type" name="body_type">
+
+                                    <option value="">select</option>
+                                    <option value="text" >plain text</option>
+                                    <option value="html" >html</option>
+
+                                </select>
                             </div>
 
                             <!-- Message -->
@@ -820,7 +837,8 @@
                                 </label>
                                 <textarea
                                     class="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                                    id="body" rows="8" name="body" placeholder="Enter your email message"></textarea>
+                                    id="body" rows="8" name="body"
+                                    placeholder="Enter your email message"><?php echo $preferance_message ?></textarea>
                             </div>
 
                             <!-- Recipients -->
@@ -949,60 +967,59 @@
                         </script>
 
                         <script>
-                            
-                            function showToastAndReload() {
+                        function showToastAndReload() {
 
-                                Swal.fire({
-                                    title: '',
-                                    html: '', // Keep it short for a smaller box
-                                    width: '250px',     // Smaller width
-                                    padding: '1em',     // Reduce padding
-                                    showConfirmButton: false, // Hide any buttons
-                                    allowOutsideClick: false,
-                                    allowEscapeKey: false,
-                                    didOpen: () => {
-                                        Swal.showLoading(); // Show the spinner
-                                    }
-                                });
+                            Swal.fire({
+                                title: '',
+                                html: '', // Keep it short for a smaller box
+                                width: '250px', // Smaller width
+                                padding: '1em', // Reduce padding
+                                showConfirmButton: false, // Hide any buttons
+                                allowOutsideClick: false,
+                                allowEscapeKey: false,
+                                didOpen: () => {
+                                    Swal.showLoading(); // Show the spinner
+                                }
+                            });
 
-                            }
-
-
-                            function api_send() {
-
-                                showToastAndReload();
-
-                                let form = document.getElementById('send_form');
+                        }
 
 
-                                form.addEventListener('submit', (event) => {
+                        function api_send() {
 
-                                    event.preventDefault();
+                            showToastAndReload();
 
-                                    let formData = new FormData(form);
+                            let form = document.getElementById('send_form');
 
-                                    fetch('<?php echo $domain; ?>compose/mailer.php', {
 
-                                            method: 'POST',
-                                            body: formData
-                                        })
-                                        .then(response => {
-                                            if (!response.ok) {
-                                                throw new Error('Network response was not ok: ' + response
-                                                    .statusText);
-                                            }
-                                            return response.json(); // Or .json() if your API sends JSON
-                                        })
-                                        .then(data => {
+                            form.addEventListener('submit', (event) => {
 
-                                            console.log(data);
-                                            
-                                            // Example variables
-                                            let sentCount = data.sent || 0;
-                                            let failedCount = data.failed || 0;
-                                            let message = data.message || '';
+                                event.preventDefault();
 
-                                            Swal.fire({
+                                let formData = new FormData(form);
+
+                                fetch('<?php echo $domain; ?>compose/mailer.php', {
+
+                                        method: 'POST',
+                                        body: formData
+                                    })
+                                    .then(response => {
+                                        if (!response.ok) {
+                                            throw new Error('Network response was not ok: ' + response
+                                                .statusText);
+                                        }
+                                        return response.json(); // Or .json() if your API sends JSON
+                                    })
+                                    .then(data => {
+
+                                        console.log(data);
+
+                                        // Example variables
+                                        let sentCount = data.sent || 0;
+                                        let failedCount = data.failed || 0;
+                                        let message = data.message || '';
+
+                                        Swal.fire({
                                             icon: sentCount > 0 ? 'success' : 'error',
                                             title: sentCount > 0 ? 'Successful!' : 'failed!',
                                             html: `
@@ -1017,26 +1034,26 @@
                                             width: '300px',
                                             heightAuto: false,
                                             confirmButtonText: 'OK'
-                                            }).then(() => {
+                                        }).then(() => {
                                             // Refresh the page when user clicks OK
                                             location.reload();
-                                            });
-
-                                        })
-                                        .catch(error => {
-                                            console.error('Error:', error);
-                                            Swal.fire({
-                                                icon: 'error',
-                                                title: 'Something Went Wrong!',
-                                                text: "An error occurred while processing your request.",
-                                                width: '300px',
-                                                height: '300px'
-                                            });
                                         });
-                                });
+
+                                    })
+                                    .catch(error => {
+                                        console.error('Error:', error);
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Something Went Wrong!',
+                                            text: "An error occurred while processing your request.",
+                                            width: '300px',
+                                            height: '300px'
+                                        });
+                                    });
+                            });
 
 
-                            }
+                        }
                         </script>
 
 

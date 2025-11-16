@@ -22,8 +22,9 @@
                 config.sender_name,
                 config.reply_to,
                 config.username,
-                config.security
-            FROM user, config
+                config.security,
+                preferance.*
+            FROM user, config , preferance
             WHERE user.id = '$id'"
         );
 
@@ -41,6 +42,8 @@
             $smtp_sender_name = $row['sender_name'];
             $username = $row['username'];
             $security = $row['security'];
+            $preferance_subject = $row['subject'];
+            $preferance_message = $row['body'];
 
 
 

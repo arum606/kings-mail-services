@@ -58,6 +58,23 @@
               Profile
             </button>
           </a>
+
+
+          <a href="<?php echo $domain ?>/Preferences">
+            <button class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg"
+                  width="24" height="24" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" class="lucide lucide-save h-4 w-4">
+                <path d="M5 21h14a2 2 0 0 0 2-2V7l-5-5H5a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2z"/>
+                <path d="M17 21v-8H7v8"/>
+                <path d="M7 3v5h8"/>
+              </svg>
+
+
+              Preferences
+            </button>
+          </a>
         </div>
       </div>
         <a href="?logout=true">

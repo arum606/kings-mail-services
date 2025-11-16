@@ -759,29 +759,6 @@
                     data-component-line="84" data-component-file="Logs.tsx" data-component-name="Card"
                     data-component-content="%7B%7D" class="rounded-lg border bg-card text-card-foreground shadow-sm">
 
-
-
-
-                    <form method="GET" class="inline-block">
-                        <input type="date" name="preview_date"
-                            value="<?php echo isset($_GET['preview_date']) ? $_GET['preview_date'] : date('Y-m-d'); ?>"
-                            class="rounded-lg border border-blue-500 bg-blue-100 text-blue-800 px-3 py-1 shadow-sm text-sm transition-all duration-200 hover:bg-blue-200 cursor-pointer"
-                            style = "border-color: #3b82f6; color: #1e40af;"
-                            onchange="this.form.submit()">
-                    </form>
-
-
-
-
-
-
-
-
-
-
-
-
-
                     <div data-lov-id="src/pages/Logs.tsx:85:10" data-lov-name="CardHeader"
                         data-component-path="src/pages/Logs.tsx" data-component-line="85" data-component-file="Logs.tsx"
                         data-component-name="CardHeader" data-component-content="%7B%7D"
@@ -790,7 +767,7 @@
                             data-component-path="src/pages/Logs.tsx" data-component-line="86"
                             data-component-file="Logs.tsx" data-component-name="CardTitle"
                             data-component-content="%7B%22text%22%3A%22Campaign%20History%22%7D"
-                            class="text-2xl font-semibold leading-none tracking-tight">Campaign History</h3>
+                            class="text-2xl font-semibold leading-none tracking-tight">Preview</h3>
                         <p data-lov-id="src/pages/Logs.tsx:87:12" data-lov-name="CardDescription"
                             data-component-path="src/pages/Logs.tsx" data-component-line="87"
                             data-component-file="Logs.tsx" data-component-name="CardDescription"
@@ -817,115 +794,102 @@
                                             class="border-b transition-colors data-[state=selected]:bg-muted hover:bg-muted/50">
                                             <th
                                                 class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">
-                                                Date &amp; Time
+                                                Sent
                                             </th>
+
                                             <th
                                                 class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">
-                                                Subject
+                                                Seen
                                             </th>
+
+                                            
                                             <th
                                                 class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">
-                                                Recipients
+                                                Email
                                             </th>
+
+
                                             <th
                                                 class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">
-                                                Success
+                                                status
                                             </th>
-                                            <th
-                                                class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">
-                                                Failed
-                                            </th>
-                                            <th
-                                                class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">
-                                                Details
-                                            </th>
+
                                         </tr>
                                     </thead>
-                                    <!-- <tbody class="[&_tr:last-child]:border-0">
-                                    <tr class="border-b transition-colors data-[state=selected]:bg-muted hover:bg-muted/50">
-                                    <td class="p-4 align-middle [&:has([role=checkbox])]:pr-0 font-medium">
-                                        Oct 13, 2025 11:39:06
-                                    </td>
-                                    <td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">
-                                        Why was my website flagged for abuse
-                                    </td>
-                                    <td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">1</td>
-                                    <td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">
-                                        <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent text-primary-foreground hover:bg-primary/80 bg-green-500">
-                                        1
-                                        </div>
-                                    </td>
-                                    <td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">
-                                        <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80">
-                                        0
-                                        </div>
-                                    </td>
-                                    <td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">
-                                        <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80">
-                                        Completed
-                                        </div>
-                                    </td>
-                                    </tr>
-                                </tbody> -->
+                                    <tbody class="[&_tr:last-child]:border-0">
 
-                                    <?php 
 
-                                        if (!isset($_GET['preview_date'])) {
-                                            $date = date('Y-m-d'); // today
-                                        } else {
-                                            $date = $_GET['preview_date']; // match the GET key
-                                        }
+                                        <?php 
 
-                                        // Escape the date to prevent SQL injection
-                                        $date = mysqli_real_escape_string($connection, $date);
+                                            if (!isset($_GET['id'])) {
 
-                                        // Select rows where the DATE part of the datetime column matches $date
-                                        $sql = mysqli_query($connection, "SELECT * FROM `history` WHERE `user` = '$id' AND DATE(`date`) = '$date' ORDER BY id DESC");
+                                                echo "<script>window.location.href = '../logs/';</script>";
 
-                                        if($sql && mysqli_num_rows($sql) > 0){
-                                            echo '<tbody class="[&_tr:last-child]:border-0">';
-                                            while($row = mysqli_fetch_assoc($sql)){
-                                                $date = $row['date'] ?? '';
-                                                $url = '../preview/index.php?id=' . urlencode($row['id']);
-                                                $subject = htmlspecialchars($row['subject']);
-                                                $recipients = intval($row['receipant']);
-                                                $success = intval($row['successful']);
-                                                $failed = intval($row['failed']);
-                                                $status_text = htmlspecialchars($row['status'] ?? ($failed > 0 ? 'Partial' : 'Completed'), ENT_QUOTES, 'UTF-8');
+                                            } else {
 
-                                                $successBadge = '<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent text-primary-foreground hover:bg-primary/80 bg-green-500">'. $success .'</div>';
-                                                $failedBadge = '<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80">'. $failed .'</div>';
-
-                                                // Set status class based on status text or failed count
-                                                if ( $status_text == 'failed') {
-
-                                                    $statusClass = 'class=" inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80"';
-
-                                                } else {
-
-                                                    $statusClass = 'class=" inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80"';
-                                                }
-
-                                                echo '<tr class="border-b transition-colors data-[state=selected]:bg-muted hover:bg-muted/50">';
-                                                echo '<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0 font-medium">'. htmlspecialchars($date, ENT_QUOTES, 'UTF-8') .'</td>';
-                                                echo '<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">'. $subject .'</td>';
-                                                echo '<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">'. $recipients .'</td>';
-                                                echo '<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">'. $successBadge .'</td>';
-                                                echo '<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">'. $failedBadge .'</td>';
-                                                echo '<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0"><a href="' . $url . '"  style="background-color:blue;color:white;border:none" class="inline-block rounded-lg border border-blue-500 bg-blue-100 text-blue-800 shadow-sm px-3 py-1 text-center text-sm transition-all duration-200 hover:bg-blue-200">Preview</a></td>';
-                                                echo '</tr>';
+                                                $view_id = $_GET['id']; // match the GET key
                                             }
-                                            echo '</tbody>';
 
-                                        } else {
-                                            echo '<tbody class="[&_tr:last-child]:border-0">';
-                                            echo '<tr class="border-b transition-colors data-[state=selected]:bg-muted hover:bg-muted/50">';
-                                            echo '<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0 font-medium" colspan="6">No logs found.</td>';
-                                            echo '</tr>';
-                                            echo '</tbody>';
-                                        }
+                                            
 
-                                ?>
+
+
+                                            $sql = mysqli_query($connection, "SELECT * FROM `sent_email_list` WHERE `history_id` = '$view_id' ");
+
+                                            if($sql && mysqli_num_rows($sql) > 0){
+                                                
+                                                echo '<tbody class="[&_tr:last-child]:border-0">';
+                                                while($row = mysqli_fetch_assoc($sql)){
+
+
+                                                    $date = $row['date_sent'];
+                                                    $email = $row['email'];
+
+                                                    if ($row['seen'] != 'pending') {
+
+                                                        $seen = '<span style="color:green;font-weight:bold">'.$row['seen'].'</span>';
+
+                                                    } else {
+                                                        $seen = '<span style="color:blue;font-weight:bold">PENDING</span>';
+                                                    }
+                                                    
+                                                    if ($row['status'] == 'success') {
+                                                        $status_button = '<span style="color:blue;font-weight:bold">SENT</span>';
+                                                    } else  if ($row['status'] == 'seen') {
+                                                        $status_button = '<span style="color:green;font-weight:bold">SEEN</span>';
+                                                    }else if ($row['status'] == 'pending') {
+                                                        $status_button = '<span style="color:orange;font-weight:bold">PENDING</span>';
+                                                    }else if ($row['status'] == 'failed') {
+                                                        $status_button = '<span style="color:red;font-weight:bold">FAILED</span>';
+                                                    }else {
+
+                                                        $status_button = '<span style="color:red;font-weight:bold">UNKNOWN</span>';
+                                                    }
+
+
+
+
+
+                                                    echo '<tr class="border-b transition-colors data-[state=selected]:bg-muted hover:bg-muted/50">';
+                                                    echo '<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0 font-medium">'. htmlspecialchars($date, ENT_QUOTES, 'UTF-8') .'</td>';
+                                                    echo '<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0 font-medium">'. $seen .'</td>';
+                                                    echo '<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0 font-medium">'. $email .'</td>';
+                                                    echo '<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">'.$status_button.'</td>';
+                                                    echo '</tr>';
+                                                }
+                                                echo '</tbody>';
+
+                                            } else {
+                                                echo '<tbody class="[&_tr:last-child]:border-0">';
+                                                echo '<tr class="border-b transition-colors data-[state=selected]:bg-muted hover:bg-muted/50">';
+                                                echo '<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0 font-medium" colspan="6">No logs found.</td>';
+                                                echo '</tr>';
+                                                echo '</tbody>';
+                                            }
+
+                                        ?>
+
+                                    </tbody>   
 
                                 </table>
                                 </table>

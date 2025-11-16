@@ -5,26 +5,32 @@ require_once("../server/auth.php");
 
 header('Content-Type: application/json');
 
-// Validate POST input
+// ----------------------------
+// VALIDATE POST INPUT
+// ----------------------------
 if (
     empty($_POST['subject']) ||
     empty($_POST['body']) ||
-    empty($_POST['recipients'])
+    empty($_POST['recipients']) ||
+    empty($_POST['body_type'])
 ) {
-    echo json_encode(['status' => 'error', 'message' => 'Subject, body, and recipients are required']);
+    echo json_encode(['status' => 'error', 'message' => 'Subject, body, body type, and recipients are required']);
     exit;
 }
 
 $subject = trim($_POST['subject']);
 $body = trim($_POST['body']);
 $recipient_input = $_POST['recipients'];
+$body_type = $_POST['body_type'];
 
-// Convert comma-separated list → array
+// Convert recipients to array
 $recipients = is_string($recipient_input)
     ? array_map('trim', explode(',', $recipient_input))
     : $recipient_input;
 
-// Validate emails
+// ----------------------------
+// VALIDATE EMAILS
+// ----------------------------
 $valid_recipients = [];
 foreach ($recipients as $email) {
     if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -37,10 +43,6 @@ if (empty($valid_recipients)) {
     exit;
 }
 
-// Build HTML body
-$htmlBody = $body;
-
-// Counters
 $total_email = count($valid_recipients);
 $sent = 0;
 $failed = 0;
@@ -59,54 +61,89 @@ $mail->Username = $username;
 $mail->Password = $smtp_password;
 
 $mail->isHTML(true);
-
-// Correct way to set sender display name
 $mail->setFrom($smtp_email, $smtp_sender_name);
-
-// Reply-to with proper name
 $mail->addReplyTo($reply_to, "support");
-
-// Subject and body
 $mail->Subject = $subject;
-$mail->Body = $htmlBody;
 
-// Optional headers
 $mail->addCustomHeader("List-Unsubscribe", "<mailto:unsubscribe@$domain>");
-
-// Keep SMTP connection alive
 $mail->SMTPKeepAlive = true;
 
-// Add recipients as BCC
+// ----------------------------
+// INSERT MAIN HISTORY RECORD
+// ----------------------------
+$escaped_subject = mysqli_real_escape_string($connection, $subject);
+$sql = "INSERT INTO history (`status`, receipant, successful, failed, `date`, `subject`, `user`)
+        VALUES ('pending', '$total_email', 0, 0, NOW(), '$escaped_subject', '$id')";
+mysqli_query($connection, $sql);
+$history_id = mysqli_insert_id($connection);
+
+// ----------------------------
+// SEND EMAILS ONE BY ONE
+// ----------------------------
+$counter = 1;
+
 foreach ($valid_recipients as $email) {
-    $mail->addBCC($email);
+
+    $mail->clearAllRecipients();
+    $mail->addAddress($email);
+
+    // Tiny invisible tracking pixel (works for Gmail)
+    $tracking_img = "<img src='{$domain}/server/api/images.php?h={$history_id}&t={$counter}' width='1' height='1' style='opacity:0;' />";
+
+
+    // Build email body
+    if ($body_type === 'text') {
+        // Wrap plain text in HTML and append tracking pixel
+        $mail->Body = "<html><head><meta charset='UTF-8'></head><body>"
+                    . "<p>" . nl2br(htmlspecialchars($body)) . "</p>"
+                    . $tracking_img
+                    . "</body></html>";
+    } else {
+        // HTML email: append tracking pixel automatically
+        $mail->Body = $body . $tracking_img;
+    }
+
+    // Send email
+    if ($mail->send()) {
+        $status_email = 'success';
+        $sent++;
+    } else {
+        $status_email = 'failed';
+        $failed++;
+    }
+
+    $email_escaped = mysqli_real_escape_string($connection, $email);
+
+    // Insert sent email record
+    $sql2 = "INSERT INTO sent_email_list 
+                (history_id, email, tracking_id, date_sent, status, user)
+             VALUES 
+                ('$history_id', '$email_escaped', '$counter', NOW(), '$status_email', '$id')";
+    mysqli_query($connection, $sql2);
+
+    $counter++;
 }
 
-// Send the email
-if ($mail->send()) {
-    $sent = $total_email;
-} else {
-    $failed = $total_email;
-}
-
+// Close SMTP connection
 $mail->smtpClose();
 
-// Status
-$status = ($failed === 0) ? 'success' : 'failed';
+// ----------------------------
+// UPDATE HISTORY WITH FINAL STATUS
+// ----------------------------
+$final_status = ($failed === 0) ? 'success' : 'partial';
+$sql_update_history = "UPDATE history 
+                       SET status = '$final_status', successful = '$sent', failed = '$failed' 
+                       WHERE id = '$history_id'";
+mysqli_query($connection, $sql_update_history);
 
-// Escape subject for SQL
-$escaped_subject = mysqli_real_escape_string($connection, $subject);
-
-// Insert into history table
-$sql = "INSERT INTO history (`status`, receipant, successful, failed, `date`, `subject`, `user`)
-        VALUES ('$status', '$total_email', '$sent', '$failed', NOW(), '$escaped_subject', '$id')";
-
-mysqli_query($connection, $sql);
-
-// API response
+// ----------------------------
+// API RESPONSE
+// ----------------------------
 echo json_encode([
-    'status' => $status,
+    'status' => $final_status,
     'total'  => $total_email,
     'sent'   => $sent,
-    'failed' => $failed
+    'failed' => $failed,
+    'history_id' => $history_id
 ]);
 ?>

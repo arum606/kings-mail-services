@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bulk Email Sender - Professional Email Marketing Platform</title>
@@ -21,9 +22,30 @@
     <meta name="twitter:site" content="@lovable_dev">
     <meta name="twitter:image"
         content="https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/50617b89-bb7f-4d4d-9560-c9875bc01890/id-preview-399cb5cb--18ca528e-b2b3-4eeb-8052-daad5eb0e64f.lovable.app-1760374855277.png">
-
     <link rel="stylesheet" crossorigin="" href="../src/index-Do3cWJMn.css">
-
+    <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+    #lovable-badge {
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+        width: 141px;
+        padding: 5px 13px;
+        background-color: #000;
+        color: #fff;
+        font-size: 12px;
+        border-radius: 5px;
+        font-family: sans-serif;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        z-index: 1000000;
+        text-transform: none !important;
+        font-feature-settings: normal !important;
+        font-weight: 400 !important;
+    }
+    </style>
     <style type="text/css">
     :where(html[dir="ltr"]),
     :where([data-sonner-toaster][dir="ltr"]) {
@@ -716,6 +738,7 @@
         transform: scale(.8) translate(-50%, -50%)
     }
     </style>
+
 </head>
 
 <body>
@@ -729,210 +752,132 @@
         </div>
         <section aria-label="Notifications alt+T" tabindex="-1" aria-live="polite" aria-relevant="additions text"
             aria-atomic="false"></section>
-        <div data-lov-id="src/pages/Logs.tsx:76:4" data-lov-name="div" data-component-path="src/pages/Logs.tsx"
-            data-component-line="76" data-component-file="Logs.tsx" data-component-name="div"
+        <div data-lov-id="src/pages/Profile.tsx:119:4" data-lov-name="div" data-component-path="src/pages/Profile.tsx"
+            data-component-line="119" data-component-file="Profile.tsx" data-component-name="div"
             data-component-content="%7B%22className%22%3A%22min-h-screen%20bg-background%22%7D"
             class="min-h-screen bg-background">
-
 
             <?php  include('../components/nav.php')   ?>
 
 
-            <div data-lov-id="src/pages/Logs.tsx:78:6" data-lov-name="div" data-component-path="src/pages/Logs.tsx"
-                data-component-line="78" data-component-file="Logs.tsx" data-component-name="div"
-                data-component-content="%7B%22className%22%3A%22container%20mx-auto%20px-4%20py-8%22%7D"
-                class="container mx-auto px-4 py-8">
-                <div data-lov-id="src/pages/Logs.tsx:79:8" data-lov-name="div" data-component-path="src/pages/Logs.tsx"
-                    data-component-line="79" data-component-file="Logs.tsx" data-component-name="div"
+            <div data-lov-id="src/pages/Profile.tsx:121:6" data-lov-name="div"
+                data-component-path="src/pages/Profile.tsx" data-component-line="121" data-component-file="Profile.tsx"
+                data-component-name="div"
+                data-component-content="%7B%22className%22%3A%22container%20mx-auto%20px-4%20py-8%20max-w-2xl%22%7D"
+                class="container mx-auto px-4 py-8 max-w-2xl">
+                <div data-lov-id="src/pages/Profile.tsx:122:8" data-lov-name="div"
+                    data-component-path="src/pages/Profile.tsx" data-component-line="122"
+                    data-component-file="Profile.tsx" data-component-name="div"
                     data-component-content="%7B%22className%22%3A%22mb-8%22%7D" class="mb-8">
-                    <h2 data-lov-id="src/pages/Logs.tsx:80:10" data-lov-name="h2"
-                        data-component-path="src/pages/Logs.tsx" data-component-line="80" data-component-file="Logs.tsx"
-                        data-component-name="h2"
-                        data-component-content="%7B%22text%22%3A%22Email%20Logs%22%2C%22className%22%3A%22text-3xl%20font-bold%20tracking-tight%22%7D"
-                        class="text-3xl font-bold tracking-tight">Email Logs</h2>
-                    <p data-lov-id="src/pages/Logs.tsx:81:10" data-lov-name="p" data-component-path="src/pages/Logs.tsx"
-                        data-component-line="81" data-component-file="Logs.tsx" data-component-name="p"
-                        data-component-content="%7B%22text%22%3A%22View%20all%20your%20email%20campaign%20history%22%2C%22className%22%3A%22text-muted-foreground%20mt-1%22%7D"
-                        class="text-muted-foreground mt-1">View all your email campaign history</p>
+                    <h5 data-lov-id="src/pages/Profile.tsx:123:10" data-lov-name="h2"
+                        data-component-path="src/pages/Profile.tsx" data-component-line="123"
+                        data-component-file="Profile.tsx" data-component-name="h2"
+                        data-component-content="%7B%22text%22%3A%22Profile%20Settings%22%2C%22className%22%3A%22text-3xl%20font-bold%20tracking-tight%22%7D"
+                        class="text-3xl font-bold tracking-tight">Preferences</h5>
+
                 </div>
-                <div data-lov-id="src/pages/Logs.tsx:84:8" data-lov-name="Card" data-component-path="src/pages/Logs.tsx"
-                    data-component-line="84" data-component-file="Logs.tsx" data-component-name="Card"
-                    data-component-content="%7B%7D" class="rounded-lg border bg-card text-card-foreground shadow-sm">
+                <div data-lov-id="src/pages/Profile.tsx:127:8" data-lov-name="div"
+                    data-component-path="src/pages/Profile.tsx" data-component-line="127"
+                    data-component-file="Profile.tsx" data-component-name="div"
+                    data-component-content="%7B%22className%22%3A%22space-y-6%22%7D" class="space-y-6">
+                    <div data-lov-id="src/pages/Profile.tsx:128:10" data-lov-name="Card"
+                        data-component-path="src/pages/Profile.tsx" data-component-line="128"
+                        data-component-file="Profile.tsx" data-component-name="Card" data-component-content="%7B%7D"
+                        class="rounded-lg border bg-card text-card-foreground shadow-sm">
+                        <div data-lov-id="src/pages/Profile.tsx:129:12" data-lov-name="CardHeader"
+                            data-component-path="src/pages/Profile.tsx" data-component-line="129"
+                            data-component-file="Profile.tsx" data-component-name="CardHeader"
+                            data-component-content="%7B%7D" class="flex flex-col space-y-1.5 p-6">
+                            <h5 style="font-weight:bold"></h5>
+
+                        </div>
+                        <div data-lov-id="src/pages/Profile.tsx:135:12" data-lov-name="CardContent"
+                            data-component-path="src/pages/Profile.tsx" data-component-line="135"
+                            data-component-file="Profile.tsx" data-component-name="CardContent"
+                            data-component-content="%7B%7D" class="p-6 pt-0">
+
+                            <form class="space-y-4" method="POST" action="">
+
+
+                                <div class="space-y-2">
+                                    <label
+                                        class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                        for="newEmail">
+                                        Subject
+
+                                    </label>
+                                    <input type="text" id="newEmail" placeholder="" name="subject" required=""
+                                        value="<?php echo $preferance_subject ?>"
+                                        class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm" />
+                                </div>
+
+
+                                <div class="space-y-2">
+                                    <label
+                                        class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                        for="body">
+                                        Message / Html
+                                    </label>
+                                    <textarea
+                                        class="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                        id="body" rows="8" name="body"
+                                        placeholder="Enter your  message or your  html template"><?php echo $preferance_message ?></textarea>
+                                </div>
+
+
+                            <button type="submit"  id="send_email" name="update_preferences"
+                                
+                                class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full gap-2">
+
+                                Save Changes
+
+
+                            </button>
+
+                            </form>
+
+                            <?php 
+
+                            if (isset($_POST['update_preferences'])) {
+
+
+                                $subject = mysqli_real_escape_string($connection, $_POST['subject']);
+                                $body = mysqli_real_escape_string($connection, $_POST['body']);
+
+                                $update_query = "UPDATE preferance SET `subject`='$subject', `body`='$body' WHERE id=$id";
+                                $update_result = mysqli_query($connection, $update_query);
+                                if ($update_result) {
+                                    echo "<script>
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Preferences Updated',
+                                        text: 'Your email preferences have been updated successfully.',
+                                        confirmButtonText: 'OK'
+                                    });
+                                    </script>";
+                                } else {
+                                    echo "<script>
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Update Failed',
+                                        text: 'There was an error updating your preferences. Please try again.',
+                                        confirmButtonText: 'OK'
+                                    });
+                                    </script>";
+                                }
 
 
 
-
-                    <form method="GET" class="inline-block">
-                        <input type="date" name="preview_date"
-                            value="<?php echo isset($_GET['preview_date']) ? $_GET['preview_date'] : date('Y-m-d'); ?>"
-                            class="rounded-lg border border-blue-500 bg-blue-100 text-blue-800 px-3 py-1 shadow-sm text-sm transition-all duration-200 hover:bg-blue-200 cursor-pointer"
-                            style = "border-color: #3b82f6; color: #1e40af;"
-                            onchange="this.form.submit()">
-                    </form>
+                            }
 
 
 
+                            ?>
 
 
-
-
-
-
-
-
-
-
-                    <div data-lov-id="src/pages/Logs.tsx:85:10" data-lov-name="CardHeader"
-                        data-component-path="src/pages/Logs.tsx" data-component-line="85" data-component-file="Logs.tsx"
-                        data-component-name="CardHeader" data-component-content="%7B%7D"
-                        class="flex flex-col space-y-1.5 p-6">
-                        <h3 data-lov-id="src/pages/Logs.tsx:86:12" data-lov-name="CardTitle"
-                            data-component-path="src/pages/Logs.tsx" data-component-line="86"
-                            data-component-file="Logs.tsx" data-component-name="CardTitle"
-                            data-component-content="%7B%22text%22%3A%22Campaign%20History%22%7D"
-                            class="text-2xl font-semibold leading-none tracking-tight">Campaign History</h3>
-                        <p data-lov-id="src/pages/Logs.tsx:87:12" data-lov-name="CardDescription"
-                            data-component-path="src/pages/Logs.tsx" data-component-line="87"
-                            data-component-file="Logs.tsx" data-component-name="CardDescription"
-                            data-component-content="%7B%22text%22%3A%22Complete%20history%20of%20all%20email%20campaigns%20sent%22%7D"
-                            class="text-sm text-muted-foreground">Complete history of all email campaigns sent</p>
-                    </div>
-                    <div data-lov-id="src/pages/Logs.tsx:91:10" data-lov-name="CardContent"
-                        data-component-path="src/pages/Logs.tsx" data-component-line="91" data-component-file="Logs.tsx"
-                        data-component-name="CardContent" data-component-content="%7B%7D" class="p-6 pt-0">
-                        <div data-lov-id="src/pages/Logs.tsx:97:14" data-lov-name="div"
-                            data-component-path="src/pages/Logs.tsx" data-component-line="97"
-                            data-component-file="Logs.tsx" data-component-name="div"
-                            data-component-content="%7B%22className%22%3A%22overflow-x-auto%22%7D"
-                            class="overflow-x-auto">
-                            <div data-lov-id="src/components/ui/table.tsx:7:4" data-lov-name="div"
-                                data-component-path="src/components/ui/table.tsx" data-component-line="7"
-                                data-component-file="table.tsx" data-component-name="div"
-                                data-component-content="%7B%22className%22%3A%22relative%20w-full%20overflow-auto%22%7D"
-                                class="relative w-full overflow-auto">
-
-                                <table class="w-full caption-bottom text-sm">
-                                    <thead class="[&_tr]:border-b">
-                                        <tr
-                                            class="border-b transition-colors data-[state=selected]:bg-muted hover:bg-muted/50">
-                                            <th
-                                                class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">
-                                                Date &amp; Time
-                                            </th>
-                                            <th
-                                                class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">
-                                                Subject
-                                            </th>
-                                            <th
-                                                class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">
-                                                Recipients
-                                            </th>
-                                            <th
-                                                class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">
-                                                Success
-                                            </th>
-                                            <th
-                                                class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">
-                                                Failed
-                                            </th>
-                                            <th
-                                                class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">
-                                                Details
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <!-- <tbody class="[&_tr:last-child]:border-0">
-                                    <tr class="border-b transition-colors data-[state=selected]:bg-muted hover:bg-muted/50">
-                                    <td class="p-4 align-middle [&:has([role=checkbox])]:pr-0 font-medium">
-                                        Oct 13, 2025 11:39:06
-                                    </td>
-                                    <td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">
-                                        Why was my website flagged for abuse
-                                    </td>
-                                    <td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">1</td>
-                                    <td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">
-                                        <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent text-primary-foreground hover:bg-primary/80 bg-green-500">
-                                        1
-                                        </div>
-                                    </td>
-                                    <td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">
-                                        <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80">
-                                        0
-                                        </div>
-                                    </td>
-                                    <td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">
-                                        <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80">
-                                        Completed
-                                        </div>
-                                    </td>
-                                    </tr>
-                                </tbody> -->
-
-                                    <?php 
-
-                                        if (!isset($_GET['preview_date'])) {
-                                            $date = date('Y-m-d'); // today
-                                        } else {
-                                            $date = $_GET['preview_date']; // match the GET key
-                                        }
-
-                                        // Escape the date to prevent SQL injection
-                                        $date = mysqli_real_escape_string($connection, $date);
-
-                                        // Select rows where the DATE part of the datetime column matches $date
-                                        $sql = mysqli_query($connection, "SELECT * FROM `history` WHERE `user` = '$id' AND DATE(`date`) = '$date' ORDER BY id DESC");
-
-                                        if($sql && mysqli_num_rows($sql) > 0){
-                                            echo '<tbody class="[&_tr:last-child]:border-0">';
-                                            while($row = mysqli_fetch_assoc($sql)){
-                                                $date = $row['date'] ?? '';
-                                                $url = '../preview/index.php?id=' . urlencode($row['id']);
-                                                $subject = htmlspecialchars($row['subject']);
-                                                $recipients = intval($row['receipant']);
-                                                $success = intval($row['successful']);
-                                                $failed = intval($row['failed']);
-                                                $status_text = htmlspecialchars($row['status'] ?? ($failed > 0 ? 'Partial' : 'Completed'), ENT_QUOTES, 'UTF-8');
-
-                                                $successBadge = '<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent text-primary-foreground hover:bg-primary/80 bg-green-500">'. $success .'</div>';
-                                                $failedBadge = '<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80">'. $failed .'</div>';
-
-                                                // Set status class based on status text or failed count
-                                                if ( $status_text == 'failed') {
-
-                                                    $statusClass = 'class=" inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80"';
-
-                                                } else {
-
-                                                    $statusClass = 'class=" inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80"';
-                                                }
-
-                                                echo '<tr class="border-b transition-colors data-[state=selected]:bg-muted hover:bg-muted/50">';
-                                                echo '<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0 font-medium">'. htmlspecialchars($date, ENT_QUOTES, 'UTF-8') .'</td>';
-                                                echo '<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">'. $subject .'</td>';
-                                                echo '<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">'. $recipients .'</td>';
-                                                echo '<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">'. $successBadge .'</td>';
-                                                echo '<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">'. $failedBadge .'</td>';
-                                                echo '<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0"><a href="' . $url . '"  style="background-color:blue;color:white;border:none" class="inline-block rounded-lg border border-blue-500 bg-blue-100 text-blue-800 shadow-sm px-3 py-1 text-center text-sm transition-all duration-200 hover:bg-blue-200">Preview</a></td>';
-                                                echo '</tr>';
-                                            }
-                                            echo '</tbody>';
-
-                                        } else {
-                                            echo '<tbody class="[&_tr:last-child]:border-0">';
-                                            echo '<tr class="border-b transition-colors data-[state=selected]:bg-muted hover:bg-muted/50">';
-                                            echo '<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0 font-medium" colspan="6">No logs found.</td>';
-                                            echo '</tr>';
-                                            echo '</tbody>';
-                                        }
-
-                                ?>
-
-                                </table>
-                                </table>
-
-                            </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
