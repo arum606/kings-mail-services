@@ -862,11 +862,13 @@
                                         title: 'Update Failed',
                                         text: 'There was an error updating your preferences. Please try again.',
                                         confirmButtonText: 'OK'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            location.href = ''; // Refresh the page
+                                        }
                                     });
                                     </script>";
                                 }
-
-
 
                             }
 
