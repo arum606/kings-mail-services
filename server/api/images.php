@@ -1,6 +1,6 @@
 <?php
 // images.php
-include('../server/connection.php');
+include('../connection.php');
 
 // Get history and tracking IDs from query
 $history_id = isset($_GET['h']) ? intval($_GET['h']) : 0;
