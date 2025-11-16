@@ -1,6 +1,27 @@
 <?php  include("../server/connection.php");   include("../server/auth.php") ;   ?>
 <html lang="en">
 
+<?php
+
+    function shortNumber($input) {
+        
+        // Remove anything that is NOT a number
+        $num = preg_replace('/[^0-9]/', '', $input);
+
+        // Convert to integer
+        $num = intval($num);
+
+        if ($num >= 1000000000) return round($num / 1e9, 1) . 'B';
+        if ($num >= 1000000)    return round($num / 1e6, 1) . 'M';
+        if ($num >= 1000)       return round($num / 1e3, 1) . 'k';
+
+        return $num;
+    }
+
+
+
+?>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -790,7 +811,7 @@
                             </svg>
                         </div>
                         <div class="p-6 pt-0">
-                            <div class="text-3xl font-bold"><?php echo $total_sent  ?></div>
+                            <div class="text-3xl font-bold"><?php echo  shortNumber($total_sent); ?></div>
                             <p class="text-xs text-muted-foreground mt-1">Today's emails</p>
                         </div>
                     </div>
@@ -807,7 +828,7 @@
                             </svg>
                         </div>
                         <div class="p-6 pt-0">
-                            <div class="text-3xl font-bold"><?php echo $success  ?></div>
+                            <div class="text-3xl font-bold"><?php echo shortNumber($success)  ?></div>
                             <p class="text-xs text-muted-foreground mt-1">time sencitive</p>
                         </div>
                     </div>
@@ -826,7 +847,7 @@
                             </svg>
                         </div>
                         <div class="p-6 pt-0">
-                            <div class="text-3xl font-bold"><?php echo $seen ?></div>
+                            <div class="text-3xl font-bold"><?php echo shortNumber($seen) ?></div>
                             <p class="text-xs text-muted-foreground mt-1">time sensitive</p>
                         </div>
                     </div>
