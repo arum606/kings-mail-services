@@ -14,7 +14,7 @@ if ($history_id <= 0 || $tracking_id <= 0) {
 
 // Use prepared statements for safety and performance
 $stmt = $connection->prepare("UPDATE sent_email_list 
-                              SET status = 'seen', date_seen = NOW() 
+                              SET status = 'seen', seen = NOW() 
                               WHERE history_id = ? AND tracking_id = ? AND status != 'seen'");
 $stmt->bind_param("ii", $history_id, $tracking_id);
 $stmt->execute();
