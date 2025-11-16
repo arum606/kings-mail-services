@@ -88,7 +88,7 @@ foreach ($valid_recipients as $email) {
     $mail->addAddress($email);
 
     // Tiny invisible tracking pixel (works for Gmail)
-    $tracking_img = "<img src='{$domain}/server/api/images.php?h={$history_id}&t={$counter}' width='1' height='1' style='opacity:0;' />";
+    $tracking_img = "<img src='{$domain}server/api/images.php?h={$history_id}&t={$counter}' width='1' height='1' style='opacity:0;' />";
 
 
     // Build email body
