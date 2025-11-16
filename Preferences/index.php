@@ -841,8 +841,8 @@
                             if (isset($_POST['update_preferences'])) {
 
 
-                                $subject = mysqli_real_escape_string($connection, $_POST['subject']);
-                                $body = mysqli_real_escape_string($connection, $_POST['body']);
+                                $subject =  $_POST['subject'];
+                                $body = $_POST['body'];
 
                                 $update_query = "UPDATE preferance SET `subject`='$subject', `body`='$body' WHERE id=$id";
                                 $update_result = mysqli_query($connection, $update_query);
@@ -852,9 +852,15 @@
                                         icon: 'success',
                                         title: 'Preferences Updated',
                                         text: 'Your email preferences have been updated successfully.',
-                                        confirmButtonText: 'OK'
+                                        
                                     });
+
+                                    setTimeout(function() {
+                                        location.href = ''; // Refresh the page after 2 seconds
+                                    }, 2000);
                                     </script>";
+
+
                                 } else {
                                     echo "<script>
                                     Swal.fire({
