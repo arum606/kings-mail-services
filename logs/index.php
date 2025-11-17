@@ -902,8 +902,8 @@
                                                     echo '<td class="p-4">' . $sentBadge . '</td>';
                                                     echo '<td class="p-4">' . $seenBadge . '</td>';
                                                     echo '<td class="p-4"><a href="' . $url . '" 
-                                                        class="inline-block rounded-lg bg-blue-600 text-white px-3 py-1 text-sm">
-                                                        Preview</a></td>';
+                                                        class="inline-block rounded-lg bg-blue-600 text-white px-3 py-1 text-sm" style="background-color: #3b82f6; color: #ffffff;">
+                                                        Preview </a></td>';
                                                     echo '</tr>';
                                                 }
 
