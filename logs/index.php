@@ -833,7 +833,7 @@
                                             </th>
                                             <th
                                                 class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">
-                                                Failed
+                                                Seen
                                             </th>
                                             <th
                                                 class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">
@@ -841,91 +841,85 @@
                                             </th>
                                         </tr>
                                     </thead>
-                                    <!-- <tbody class="[&_tr:last-child]:border-0">
-                                    <tr class="border-b transition-colors data-[state=selected]:bg-muted hover:bg-muted/50">
-                                    <td class="p-4 align-middle [&:has([role=checkbox])]:pr-0 font-medium">
-                                        Oct 13, 2025 11:39:06
-                                    </td>
-                                    <td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">
-                                        Why was my website flagged for abuse
-                                    </td>
-                                    <td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">1</td>
-                                    <td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">
-                                        <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent text-primary-foreground hover:bg-primary/80 bg-green-500">
-                                        1
-                                        </div>
-                                    </td>
-                                    <td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">
-                                        <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80">
-                                        0
-                                        </div>
-                                    </td>
-                                    <td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">
-                                        <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80">
-                                        Completed
-                                        </div>
-                                    </td>
-                                    </tr>
-                                </tbody> -->
 
-                                    <?php 
+           
 
-                                        if (!isset($_GET['preview_date'])) {
-                                            $date = date('Y-m-d'); // today
-                                        } else {
-                                            $date = $_GET['preview_date']; // match the GET key
-                                        }
+                                        <?php 
 
-                                        // Escape the date to prevent SQL injection
-                                        $date = mysqli_real_escape_string($connection, $date);
+                                            if (!isset($_GET['preview_date'])) {
+                                                $date = date('Y-m-d'); // today
+                                            } else {
+                                                $date = $_GET['preview_date']; // match the GET key
+                                            }
 
-                                        // Select rows where the DATE part of the datetime column matches $date
-                                        $sql = mysqli_query($connection, "SELECT * FROM `history` WHERE `user` = '$id' AND DATE(`date`) = '$date' ORDER BY id DESC");
+                                            // Escape the date to prevent SQL injection
+                                            $date = mysqli_real_escape_string($connection, $date);
 
-                                        if($sql && mysqli_num_rows($sql) > 0){
-                                            echo '<tbody class="[&_tr:last-child]:border-0">';
-                                            while($row = mysqli_fetch_assoc($sql)){
-                                                $date = $row['date'] ?? '';
-                                                $url = '../preview/index.php?id=' . urlencode($row['id']);
-                                                $subject = htmlspecialchars($row['subject']);
-                                                $recipients = intval($row['receipant']);
-                                                $success = intval($row['successful']);
-                                                $failed = intval($row['failed']);
-                                                $status_text = htmlspecialchars($row['status'] ?? ($failed > 0 ? 'Partial' : 'Completed'), ENT_QUOTES, 'UTF-8');
+                                            // Select rows from history and join with sent_email_list
+                                            $sql = mysqli_query($connection, "
+                                                SELECT 
+                                                    h.*,
+                                                    COUNT(CASE WHEN s.status = 'success' THEN 1 END) AS sent_count,
+                                                    COUNT(CASE WHEN s.status = 'seen' THEN 1 END) AS seen_count
+                                                FROM history h
+                                                LEFT JOIN sent_email_list s ON s.history_id = h.id
+                                                WHERE h.user = '$id' AND DATE(h.date) = '$date'
+                                                GROUP BY h.id
+                                                ORDER BY h.id DESC
+                                            ");
 
-                                                $successBadge = '<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent text-primary-foreground hover:bg-primary/80 bg-green-500">'. $success .'</div>';
-                                                $failedBadge = '<div class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80">'. $failed .'</div>';
+                                            if ($sql && mysqli_num_rows($sql) > 0) {
+                                                echo '<tbody class="[&_tr:last-child]:border-0">';
 
-                                                // Set status class based on status text or failed count
-                                                if ( $status_text == 'failed') {
+                                                while ($row = mysqli_fetch_assoc($sql)) {
+                                                    $date = $row['date'] ?? '';
+                                                    $url = '../preview/index.php?id=' . urlencode($row['id']);
+                                                    $subject = htmlspecialchars($row['subject']);
+                                                    $recipients = intval($row['receipant']);
 
-                                                    $statusClass = 'class=" inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80"';
+                                                    // Get the counts from the JOIN
+                                                    $sent = intval($row['sent_count']);
+                                                    $seen = intval($row['seen_count']);
 
-                                                } else {
+                                                    // Sent badge
+                                                    $sentBadge = '
+                                                        <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 
+                                                        text-xs font-semibold bg-blue-500 text-white" style="background-color: #3b82f6; color: #ffffff;">
+                                                            ' . $sent . '
+                                                        </div>';
 
-                                                    $statusClass = 'class=" inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80"';
+                                                    // Seen badge
+                                                    $seenBadge = '
+                                                        <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 
+                                                        text-xs font-semibold bg-blue-500 text-white" style="background-color: green; color: #ffffff;">
+                                                            ' . $seen . '
+                                                        </div>';
+
+                                                    echo '<tr class="border-b hover:bg-muted/50">';
+                                                    echo '<td class="p-4 font-medium">' . htmlspecialchars($date) . '</td>';
+                                                    echo '<td class="p-4">' . $subject . '</td>';
+                                                    echo '<td class="p-4">' . $recipients . '</td>';
+                                                    echo '<td class="p-4">' . $sentBadge . '</td>';
+                                                    echo '<td class="p-4">' . $seenBadge . '</td>';
+                                                    echo '<td class="p-4"><a href="' . $url . '" 
+                                                        class="inline-block rounded-lg bg-blue-600 text-white px-3 py-1 text-sm">
+                                                        Preview</a></td>';
+                                                    echo '</tr>';
                                                 }
 
+                                                echo '</tbody>';
+
+                                            } else {
+                                                // If no rows are found, display a message
+                                                echo '<tbody class="[&_tr:last-child]:border-0">';
                                                 echo '<tr class="border-b transition-colors data-[state=selected]:bg-muted hover:bg-muted/50">';
-                                                echo '<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0 font-medium">'. htmlspecialchars($date, ENT_QUOTES, 'UTF-8') .'</td>';
-                                                echo '<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">'. $subject .'</td>';
-                                                echo '<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">'. $recipients .'</td>';
-                                                echo '<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">'. $successBadge .'</td>';
-                                                echo '<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">'. $failedBadge .'</td>';
-                                                echo '<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0"><a href="' . $url . '"  style="background-color:blue;color:white;border:none" class="inline-block rounded-lg border border-blue-500 bg-blue-100 text-blue-800 shadow-sm px-3 py-1 text-center text-sm transition-all duration-200 hover:bg-blue-200">Preview</a></td>';
+                                                echo '<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0 font-medium" colspan="6">No logs found.</td>';
                                                 echo '</tr>';
+                                                echo '</tbody>';
                                             }
-                                            echo '</tbody>';
 
-                                        } else {
-                                            echo '<tbody class="[&_tr:last-child]:border-0">';
-                                            echo '<tr class="border-b transition-colors data-[state=selected]:bg-muted hover:bg-muted/50">';
-                                            echo '<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0 font-medium" colspan="6">No logs found.</td>';
-                                            echo '</tr>';
-                                            echo '</tbody>';
-                                        }
+                                        ?>
 
-                                ?>
 
                                 </table>
                                 </table>

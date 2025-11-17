@@ -846,6 +846,7 @@
 
                                 $update_query = "UPDATE preferance SET `subject`='$subject', `body`='$body' WHERE id=$id";
                                 $update_result = mysqli_query($connection, $update_query);
+                                
                                 if ($update_result) {
                                     echo "<script>
                                     Swal.fire({
