@@ -766,8 +766,7 @@
                         <input type="date" name="preview_date"
                             value="<?php echo isset($_GET['preview_date']) ? $_GET['preview_date'] : date('Y-m-d'); ?>"
                             class="rounded-lg border border-blue-500 bg-blue-100 text-blue-800 px-3 py-1 shadow-sm text-sm transition-all duration-200 hover:bg-blue-200 cursor-pointer"
-                            style = "border-color: #3b82f6; color: #1e40af;"
-                            onchange="this.form.submit()">
+                            style="border-color: #3b82f6; color: #1e40af;" onchange="this.form.submit()">
                     </form>
 
 
@@ -835,6 +834,11 @@
                                                 class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">
                                                 Seen
                                             </th>
+
+                                            <th
+                                                class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">
+                                                Failed
+                                            </th>
                                             <th
                                                 class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">
                                                 Details
@@ -842,9 +846,9 @@
                                         </tr>
                                     </thead>
 
-           
 
-                                        <?php 
+
+                                    <?php 
 
                                             if (!isset($_GET['preview_date'])) {
                                                 $date = date('Y-m-d'); // today
@@ -895,12 +899,20 @@
                                                             ' . $seen . '
                                                         </div>';
 
+
+                                                    $failedBadge = '
+                                                        <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 
+                                                        text-xs font-semibold bg-blue-500 text-white" style="background-color: red; color: #ffffff;">
+                                                            ' .  $row['failed'] . '
+                                                        </div>';
+
                                                     echo '<tr class="border-b hover:bg-muted/50">';
                                                     echo '<td class="p-4 font-medium">' . htmlspecialchars($date) . '</td>';
                                                     echo '<td class="p-4">' . $subject . '</td>';
                                                     echo '<td class="p-4">' . $recipients . '</td>';
                                                     echo '<td class="p-4">' . $sentBadge . '</td>';
                                                     echo '<td class="p-4">' . $seenBadge . '</td>';
+                                                    echo '<td class="p-4">' . $failedBadge . '</td>';
                                                     echo '<td class="p-4"><a href="' . $url . '" 
                                                         class="inline-block rounded-lg bg-blue-600 text-white px-3 py-1 text-sm" style="background-color: #3b82f6; color: #ffffff;">
                                                         Preview </a></td>';
