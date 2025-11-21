@@ -806,7 +806,7 @@
                                         Subject
 
                                     </label>
-                                    <input type="text" id="newEmail" placeholder="" name="subject" required=""
+                                    <input type="text" id="newEmail" placeholder="" name="subject" required="" readonly
                                         value="<?php echo $preferance_subject ?>"
                                         class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm" />
                                 </div>
@@ -819,6 +819,7 @@
                                         Message / Html
                                     </label>
                                     <textarea
+                                        readonly
                                         class="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                                         id="body" rows="8" name="body"
                                         placeholder="Enter your  message or your  html template"><?php echo $preferance_message ?></textarea>
