@@ -57,7 +57,7 @@
         $domain = "https://lite-base.top/";
 
         define("USER", "litebase_kingsley");
-        define("PASSWORD", "MgiUN5N3n.e%");
+        define("PASSWORD", "Z1=YN03);GLI");
         define("DATABASE", "litebase_database1");
 
         // Database connection
