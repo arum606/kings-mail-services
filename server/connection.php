@@ -54,11 +54,11 @@
 
         // Online (Live Server)
 
-        $domain = "https://kings-mail-services.top/";
+        $domain = "https://lite-base.top/";
 
-        define("USER", "kingsmai_kingsley");
-        define("PASSWORD", "cStIK9Y5z80f");
-        define("DATABASE", "kingsmai_bulk_mail");
+        define("USER", "litebase_kingsley");
+        define("PASSWORD", "MgiUN5N3n.e%");
+        define("DATABASE", "litebase_database1");
 
         // Database connection
         $connection = mysqli_connect(HOST, USER, PASSWORD, DATABASE);
