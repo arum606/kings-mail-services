@@ -25,7 +25,7 @@
                 config.security,
                 preferance.*
             FROM user, config , preferance
-            WHERE user.id = '$id'"
+            WHERE user.id = '$id'  AND  config.user = '$id' AND preferance.user = '$id'"
         );
 
         if (mysqli_num_rows($query)) {
