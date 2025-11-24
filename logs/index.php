@@ -847,24 +847,24 @@
                                     </thead>
 
 
-
-                                    <?php 
+                                        <?php 
 
                                             if (!isset($_GET['preview_date'])) {
                                                 $date = date('Y-m-d'); // today
                                             } else {
-                                                $date = $_GET['preview_date']; // match the GET key
+                                                $date = $_GET['preview_date'];
                                             }
 
-                                            // Escape the date to prevent SQL injection
+                                            // Escape date to prevent SQL injection
                                             $date = mysqli_real_escape_string($connection, $date);
 
-                                            // Select rows from history and join with sent_email_list
+                                            // Corrected SQL with accurate sent, seen, failed counters
                                             $sql = mysqli_query($connection, "
                                                 SELECT 
                                                     h.*,
-                                                    COUNT(CASE WHEN s.status = 'success' THEN 1 END) AS sent_count,
-                                                    COUNT(CASE WHEN s.status = 'seen' THEN 1 END) AS seen_count
+                                                    SUM(CASE WHEN s.status = 'success' THEN 1 ELSE 0 END) AS sent_count,
+                                                    SUM(CASE WHEN s.status = 'seen' THEN 1 ELSE 0 END) AS seen_count,
+                                                    SUM(CASE WHEN s.status = 'failed' THEN 1 ELSE 0 END) AS failed_count
                                                 FROM history h
                                                 LEFT JOIN sent_email_list s ON s.history_id = h.id
                                                 WHERE h.user = '$id' AND DATE(h.date) = '$date'
@@ -876,61 +876,64 @@
                                                 echo '<tbody class="[&_tr:last-child]:border-0">';
 
                                                 while ($row = mysqli_fetch_assoc($sql)) {
-                                                    $date = $row['date'] ?? '';
+
+                                                    $date = htmlspecialchars($row['date']);
                                                     $url = '../preview/index.php?id=' . urlencode($row['id']);
                                                     $subject = htmlspecialchars($row['subject']);
                                                     $recipients = intval($row['receipant']);
 
-                                                    // Get the counts from the JOIN
+                                                    // Correct counters
                                                     $sent = intval($row['sent_count']);
                                                     $seen = intval($row['seen_count']);
+                                                    $failed = intval($row['failed_count']);
 
                                                     // Sent badge
                                                     $sentBadge = '
-                                                        <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 
-                                                        text-xs font-semibold bg-blue-500 text-white" style="background-color: #3b82f6; color: #ffffff;">
+                                                        <div class="inline-flex items-center rounded-full px-2.5 py-0.5 
+                                                        text-xs font-semibold" style="background-color:#3b82f6; color:#fff;">
                                                             ' . $sent . '
                                                         </div>';
 
                                                     // Seen badge
                                                     $seenBadge = '
-                                                        <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 
-                                                        text-xs font-semibold bg-blue-500 text-white" style="background-color: green; color: #ffffff;">
+                                                        <div class="inline-flex items-center rounded-full px-2.5 py-0.5 
+                                                        text-xs font-semibold" style="background-color:green; color:#fff;">
                                                             ' . $seen . '
                                                         </div>';
 
-
+                                                    // Failed badge
                                                     $failedBadge = '
-                                                        <div class="inline-flex items-center rounded-full border px-2.5 py-0.5 
-                                                        text-xs font-semibold bg-blue-500 text-white" style="background-color: red; color: #ffffff;">
-                                                            ' .  $row['failed'] . '
+                                                        <div class="inline-flex items-center rounded-full px-2.5 py-0.5 
+                                                        text-xs font-semibold" style="background-color:red; color:#fff;">
+                                                            ' . $failed . '
                                                         </div>';
 
                                                     echo '<tr class="border-b hover:bg-muted/50">';
-                                                    echo '<td class="p-4 font-medium">' . htmlspecialchars($date) . '</td>';
+                                                    echo '<td class="p-4 font-medium">' . $date . '</td>';
                                                     echo '<td class="p-4">' . $subject . '</td>';
                                                     echo '<td class="p-4">' . $recipients . '</td>';
                                                     echo '<td class="p-4">' . $sentBadge . '</td>';
                                                     echo '<td class="p-4">' . $seenBadge . '</td>';
                                                     echo '<td class="p-4">' . $failedBadge . '</td>';
                                                     echo '<td class="p-4"><a href="' . $url . '" 
-                                                        class="inline-block rounded-lg bg-blue-600 text-white px-3 py-1 text-sm" style="background-color: #3b82f6; color: #ffffff;">
-                                                        Preview </a></td>';
+                                                        class="inline-block rounded-lg px-3 py-1 text-sm"
+                                                        style="background-color:#3b82f6; color:#fff;">
+                                                        Preview</a></td>';
                                                     echo '</tr>';
                                                 }
 
                                                 echo '</tbody>';
 
                                             } else {
-                                                // If no rows are found, display a message
                                                 echo '<tbody class="[&_tr:last-child]:border-0">';
-                                                echo '<tr class="border-b transition-colors data-[state=selected]:bg-muted hover:bg-muted/50">';
-                                                echo '<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0 font-medium" colspan="6">No logs found.</td>';
+                                                echo '<tr class="border-b hover:bg-muted/50">';
+                                                echo '<td class="p-4 font-medium" colspan="7">No logs found.</td>';
                                                 echo '</tr>';
                                                 echo '</tbody>';
                                             }
 
                                         ?>
+
 
 
                                 </table>
