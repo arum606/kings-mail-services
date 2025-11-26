@@ -1,48 +1,115 @@
 <?php
-// images.php
 include('../connection.php');
 
-// Get history and tracking IDs from query
+// Get tracking parameters
 $history_id = isset($_GET['h']) ? intval($_GET['h']) : 0;
 $tracking_id = isset($_GET['t']) ? intval($_GET['t']) : 0;
 
-// Validate input
 if ($history_id <= 0 || $tracking_id <= 0) {
     http_response_code(400);
     exit;
 }
 
-// Check if the user-agent indicates a bot or automated system
-$user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
-$is_bot = preg_match('/bot|crawl|spider|robot|facebook|google|yandex|slurp|bing|baidu/i', $user_agent);
+// User agent
+$user_agent = strtolower($_SERVER['HTTP_USER_AGENT'] ?? '');
 
-// Also check if the referrer looks like an email client
-$referrer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
-$is_email_client = preg_match('/mail|email|outlook|gmail|yahoo|thunderbird/i', $referrer);
+// BLOCKED bots
+$block_bots = [
+    'bot','crawl','spider','crawler',
+    'googlebot','bingbot','yandex','baidu',
+    'facebookexternalhit','slurp'
+];
 
-if ($is_bot || !$is_email_client) {
-    // If it's a bot or not an email client, do not mark the email as "seen"
-    http_response_code(200); // Still return the GIF
-    header('Content-Type: image/gif');
+// Allowed email proxy user agents
+$allow_proxies = [
+    'googleimageproxy',
+    'outlook',
+    'yahoo',
+    'apple',
+    'mail',
+    'thunderbird'
+];
+
+// Detect email proxy
+$is_email_proxy = false;
+foreach ($allow_proxies as $proxy) {
+    if (strpos($user_agent, $proxy) !== false) {
+        $is_email_proxy = true;
+        break;
+    }
+}
+
+// Detect real bot
+$is_real_bot = false;
+foreach ($block_bots as $bot) {
+    if (strpos($user_agent, $bot) !== false) {
+        $is_real_bot = true;
+        break;
+    }
+}
+
+// Block real crawlers (not email proxies)
+if ($is_real_bot && !$is_email_proxy) {
+    header("Content-Type: image/gif");
     echo base64_decode('R0lGODlhAQABAIABAP///wAAACwAAAAAAQABAAACAkQBADs=');
     exit;
 }
 
-// Use prepared statements for safety and performance
-$stmt = $connection->prepare("UPDATE sent_email_list 
-                              SET `status` = 'seen', `seen` = NOW() 
-                              WHERE history_id = ? AND tracking_id = ? ");
-$stmt->bind_param("ii", $history_id, $tracking_id);
+// --- DEVICE DETECTION ---
+function parse_device($ua) {
+    if (strpos($ua, 'mobile') !== false) return "Mobile";
+    if (strpos($ua, 'tablet') !== false || strpos($ua, 'ipad') !== false) return "Tablet";
+    return "Desktop";
+}
+
+$device = parse_device($user_agent);
+
+// --- GET GEO ADDRESS (City, Region, Country) ---
+$ip = $_SERVER['REMOTE_ADDR'] ?? '';
+$address = null;
+
+if ($ip && $ip !== "127.0.0.1") {
+
+    $geo = @file_get_contents("http://ip-api.com/json/" . $ip);
+
+    if ($geo !== false) {
+        $geo = json_decode($geo, true);
+
+        if ($geo && $geo["status"] === "success") {
+            $city    = $geo["city"] ?? '';
+            $region  = $geo["regionName"] ?? '';
+            $country = $geo["country"] ?? '';
+
+            // Build the final address string
+            $address = trim("$city, $region, $country", " ,");
+        }
+    }
+}
+
+// --- UPDATE DATABASE (device + multi-open + address) ---
+$stmt = $connection->prepare("
+    UPDATE sent_email_list 
+    SET 
+        status = 'seen',
+        seen = IF(seen IS NULL, NOW(), seen),
+        last_open = NOW(),
+        open_count = open_count + 1,
+        device = ?,
+        address = ?
+    WHERE history_id = ? AND tracking_id = ?
+");
+
+$stmt->bind_param("ssii", $device, $address, $history_id, $tracking_id);
 $stmt->execute();
 $stmt->close();
 
-// Return a 1x1 transparent GIF
-header('Content-Type: image/gif');
-header('Cache-Control: no-cache, no-store, must-revalidate');
-header('Pragma: no-cache');
-header('Expires: 0');
+// Return tracking pixel
+header("Content-Type: image/gif");
+header("Cache-Control: no-cache, no-store, must-revalidate");
+header("Pragma: no-cache");
+header("Expires: 0");
 
-// 1x1 transparent GIF
 echo base64_decode('R0lGODlhAQABAIABAP///wAAACwAAAAAAQABAAACAkQBADs=');
 exit;
+
 ?>

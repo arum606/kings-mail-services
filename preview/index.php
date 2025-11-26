@@ -808,6 +808,19 @@
                                                 Email
                                             </th>
 
+                                            <th
+                                                class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">
+                                                Device
+                                            </th>
+
+
+                                            <th
+                                                class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">
+                                                Address
+                                            </th>
+
+
+
 
                                             <th
                                                 class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">
@@ -844,6 +857,8 @@
 
                                                     $date = $row['date_sent'];
                                                     $email = $row['email'];
+                                                    $device = $row['device'];
+                                                    $address = $row['address'];
 
                                                     if ($row['seen'] != 'pending') {
 
@@ -874,6 +889,8 @@
                                                     echo '<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0 font-medium">'. htmlspecialchars($date, ENT_QUOTES, 'UTF-8') .'</td>';
                                                     echo '<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0 font-medium">'. $seen .'</td>';
                                                     echo '<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0 font-medium">'. $email .'</td>';
+                                                    echo '<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0 font-medium">'. $device .'</td>';
+                                                    echo '<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0 font-medium">'. $address .'</td>';
                                                     echo '<td class="p-4 align-middle [&:has([role=checkbox])]:pr-0">'.$status_button.'</td>';
                                                     echo '</tr>';
                                                 }
