@@ -56,13 +56,13 @@ if ($is_real_bot && !$is_email_proxy) {
 }
 
 // --------------------------
-// UPDATE SEEN + OPEN COUNT
+// UPDATE SEEN (always) + OPEN COUNT
 // --------------------------
 $stmt = $connection->prepare("
     UPDATE sent_email_list 
     SET 
         status = 'seen',
-        seen = IF(seen IS NULL, NOW(), seen),  
+        seen = NOW(),          -- ALWAYS update seen timestamp
         open_count = open_count + 1
     WHERE history_id = ? AND tracking_id = ?
 ");
