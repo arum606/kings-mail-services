@@ -791,7 +791,7 @@
                     $sql1 = mysqli_query($connection, "SELECT * FROM `sent_email_list` WHERE  `status` = 'success' AND `user` = '$id' ");
                     $sql2 = mysqli_query($connection, "SELECT * FROM `sent_email_list` WHERE  `status` = 'seen' AND `user` = '$id' ");
 
-                    $total_sent = mysqli_num_rows($sql1) + mysqli_num_rows($sql2);
+                    $total_sent = mysqli_num_rows(mysqli_query($connection, "SELECT * FROM `sent_email_list` WHERE `user` = '$id' "));
                     $seen = mysqli_num_rows($sql2);
                     $success = mysqli_num_rows($sql1);
 
